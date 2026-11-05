@@ -1,0 +1,24 @@
+[project]
+name = "module-00-environment-and-mocks"
+version = "0.1.0"
+description = "Phase 1 - Module 0: Architecture Foundations and Reproducible Environments"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.9.0",
+    "python-dotenv>=1.0.1",
+    "httpx>=0.27.0",
+    "openai>=1.50.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+pythonpath = ["."]

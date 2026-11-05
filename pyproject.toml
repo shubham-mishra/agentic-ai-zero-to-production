@@ -1,0 +1,45 @@
+[project]
+name = "production-agentic-ai"
+version = "0.1.0"
+description = "Production Agentic AI: From Zero to Deployment"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.9.0",
+    "python-dotenv>=1.0.1",
+    "httpx>=0.27.0",
+    "openai>=1.50.0",
+    "tiktoken>=0.14.0",
+    "tenacity>=9.2.1",
+    "mcp>=1.0.0",
+    "fastmcp>=0.1.0",
+    "sqlalchemy>=2.0.0",
+    "psycopg[binary]>=3.2.0",
+    "docker>=7.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "mkdocs>=1.6.0",
+    "mkdocs-material>=9.5.0",
+    "pymdown-extensions>=10.9",
+]
+
+[tool.uv.workspace]
+members = [
+    "phase-1-foundations/00-environment-and-mocks",
+    "phase-1-foundations/01-deterministic-control-flow",
+    "phase-1-foundations/02-mcp-tools-and-sandboxing",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = [
+    "phase-1-foundations/00-environment-and-mocks/tests",
+    "phase-1-foundations/01-deterministic-control-flow/tests",
+    "phase-1-foundations/02-mcp-tools-and-sandboxing/tests",
+]
+pythonpath = ["."]

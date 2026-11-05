@@ -1,0 +1,1 @@
+--8<-- "phase-1-foundations/00-environment-and-mocks/docs/index.md"

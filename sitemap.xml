@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://shubham-mishra.github.io/agentic-ai-zero-to-production/</loc>
+         <lastmod>2026-11-05</lastmod>
+    </url>
+    <url>
+         <loc>https://shubham-mishra.github.io/agentic-ai-zero-to-production/phase-1/00-environment-and-mocks/</loc>
+         <lastmod>2026-11-05</lastmod>
+    </url>
+    <url>
+         <loc>https://shubham-mishra.github.io/agentic-ai-zero-to-production/phase-1/01-deterministic-control-flow/</loc>
+         <lastmod>2026-11-05</lastmod>
+    </url>
+    <url>
+         <loc>https://shubham-mishra.github.io/agentic-ai-zero-to-production/phase-1/02-mcp-tools-and-sandboxing/</loc>
+         <lastmod>2026-11-05</lastmod>
+    </url>
+</urlset>

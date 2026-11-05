@@ -1,0 +1,1265 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="An open-source, production-grade course on building enterprise agentic systems.">
+      
+      
+        <meta name="author" content="Enterprise AI Systems Engineering">
+      
+      
+        <link rel="canonical" href="https://shubham-mishra.github.io/agentic-ai-zero-to-production/phase-1/00-environment-and-mocks/">
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../01-deterministic-control-flow/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>00. Architecture Foundations & Reproducible Environments - Production Agentic AI: From Zero to Deployment</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-0-architecture-foundations-reproducible-environments" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Production Agentic AI: From Zero to Deployment" class="md-header__button md-logo" aria-label="Production Agentic AI: From Zero to Deployment" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Production Agentic AI: From Zero to Deployment
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              00. Architecture Foundations & Reproducible Environments
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Phase 1: Foundations
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Production Agentic AI: From Zero to Deployment" class="md-nav__button md-logo" aria-label="Production Agentic AI: From Zero to Deployment" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Production Agentic AI: From Zero to Deployment
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 1: Foundations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Phase 1: Foundations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00. Architecture Foundations & Reproducible Environments
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00. Architecture Foundations & Reproducible Environments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-this-chapter-is-about" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What This Chapter Is About
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. What This Chapter Is About">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-you-will-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You Will Build:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-real-world-problem-the-300-am-outage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The Real-World Problem: The 3:00 AM Outage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-system-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. System Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. System Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-pieces-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the Pieces Connect:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-engineering-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Engineering Deep Dive
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Engineering Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-blazing-fast-dependency-management-with-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Blazing-Fast Dependency Management with uv
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-validating-secrets-with-pydantic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Validating Secrets with Pydantic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-structured-outputs-turning-chaos-into-contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Structured Outputs: Turning Chaos Into Contracts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-real-time-token-latency-accounting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Real-Time Token &amp; Latency Accounting
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-hands-on-lab-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Hands-on Lab Protocol
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Hands-on Lab Protocol">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-initialize-your-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Initialize Your Workspace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-spin-up-infrastructure-containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Spin Up Infrastructure Containers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-explore-the-starter-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Explore the Starter Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-complete-the-todo-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Complete the # TODO: Blocks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-verification-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Verification Gate
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Verification Gate">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-this-gate-proves-7-passing-checks-across-3-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What This Gate Proves (7 Passing Checks Across 3 Files):
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-next-steps-on-to-module-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Next Steps: On to Module 1!
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-deterministic-control-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01. Deterministic Control Flow & Reasoning Loops
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-mcp-tools-and-sandboxing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02. Tool Sandboxing, FastMCP, and Schema Governance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-this-chapter-is-about" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What This Chapter Is About
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. What This Chapter Is About">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-you-will-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You Will Build:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-real-world-problem-the-300-am-outage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The Real-World Problem: The 3:00 AM Outage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-system-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. System Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. System Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-the-pieces-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the Pieces Connect:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-engineering-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Engineering Deep Dive
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Engineering Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-blazing-fast-dependency-management-with-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Blazing-Fast Dependency Management with uv
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-validating-secrets-with-pydantic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Validating Secrets with Pydantic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-structured-outputs-turning-chaos-into-contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Structured Outputs: Turning Chaos Into Contracts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-real-time-token-latency-accounting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Real-Time Token &amp; Latency Accounting
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-hands-on-lab-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Hands-on Lab Protocol
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Hands-on Lab Protocol">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-initialize-your-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Initialize Your Workspace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-spin-up-infrastructure-containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Spin Up Infrastructure Containers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-explore-the-starter-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Explore the Starter Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-complete-the-todo-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Complete the # TODO: Blocks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-verification-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Verification Gate
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Verification Gate">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-this-gate-proves-7-passing-checks-across-3-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What This Gate Proves (7 Passing Checks Across 3 Files):
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-next-steps-on-to-module-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Next Steps: On to Module 1!
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="module-0-architecture-foundations-reproducible-environments">Module 0: Architecture Foundations &amp; Reproducible Environments</h1>
+<blockquote>
+<p><strong>"Before you teach an AI agent how to think, write code, or execute commands on servers, you must build a bulletproof environment for it to live in."</strong></p>
+</blockquote>
+<hr />
+<h2 id="1-what-this-chapter-is-about">1. What This Chapter Is About</h2>
+<p>Welcome to the starting line of production agentic engineering!</p>
+<p>Every great software journey begins with setting up the workshop. If your workbench is messy, your tools will fail you at the worst possible moment. In agentic systems, this truth is magnified ten-fold: an agent that interacts with databases, network sockets, and remote language models requires an environment with <strong>zero ambiguity</strong>.</p>
+<p>In this module, you will lay the architectural foundation for our autonomous Site Reliability Engineer, <strong>Incident Sentinel</strong>. </p>
+<h3 id="what-you-will-build">What You Will Build:</h3>
+<ol>
+<li><strong>A Blazing-Fast, Reproducible Workspace:</strong> Configure <code>uv</code>, the modern Python package manager that eliminates dependency conflicts and locks packages deterministically.</li>
+<li><strong>Containerized Enterprise Infrastructure:</strong> Spin up local instances of <strong>PostgreSQL 16</strong> (with the <code>pgvector</code> extension for vector search), <strong>Redis 7</strong> (for caching and queues), and <strong>Arize Phoenix</strong> (for OpenTelemetry tracing) using Docker Compose.</li>
+<li><strong>A Direct Production Model Gateway:</strong> Connect directly to OpenAI (<code>gpt-4o-mini</code>) using official SDKs—with zero fake mocks.</li>
+<li><strong>Deterministic Schema Enforcement:</strong> Wrap stochastic model outputs in strict Pydantic contracts so your application never receives malformed JSON.</li>
+<li><strong>Real-Time Latency &amp; Token Accounting:</strong> Measure network round-trips down to the millisecond and count every prompt and completion token spent.</li>
+</ol>
+<p>By the end of this chapter, you will have a rock-solid, production-grade agent engineering environment ready for live development.</p>
+<hr />
+<h2 id="2-the-real-world-problem-the-300-am-outage">2. The Real-World Problem: The 3:00 AM Outage</h2>
+<p>Imagine this scenario:</p>
+<p>It is 3:15 AM. A critical infrastructure alert wakes up your on-call team:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>CRITICAL ALERT: Auth service latency spiked to 4,200ms. 
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Database connection pool exhausted in region us-east-1. 
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>500 Internal Server Errors exceed 45%.
+</span></code></pre></div></p>
+<p>A junior developer recently deployed an experimental "AI agent" script to help triage alerts. But when the alert arrives, disaster strikes:
+* <strong>Dependency Drift:</strong> The script fails to run because it was tested on Python 3.10 with an unpinned library version, and the production runner uses Python 3.12.
+* <strong>Missing Secrets:</strong> The API key was hardcoded in an environment variable that wasn't exported in the container, causing a silent crash.
+* <strong>Malformed Output:</strong> The model responds with conversational chatter: <em>"Sure! I'd be happy to help you with that database issue. Here are some thoughts..."</em> instead of a machine-readable JSON payload.
+* <strong>Runaway Budget:</strong> The script loops recursively trying to parse the conversational output, burning \$50 in API credits in two minutes before crashing.</p>
+<p>Here is the difference between a toy prototype and a production-grade agent gateway:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Dimension</th>
+<th style="text-align: left;">The Toy Prototype (What Fails)</th>
+<th style="text-align: left;">Production Agent Gateway (What We Build)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Package Management</strong></td>
+<td style="text-align: left;">Unpinned <code>requirements.txt</code> with loose versions</td>
+<td style="text-align: left;">Deterministic <code>uv.lock</code> with Python 3.12+</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Credentials &amp; Config</strong></td>
+<td style="text-align: left;">Hardcoded secrets or untyped <code>os.getenv</code></td>
+<td style="text-align: left;">Typed Pydantic Settings validated on startup</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Model Output</strong></td>
+<td style="text-align: left;">Raw string prompts parsed with regex</td>
+<td style="text-align: left;">Strict Pydantic JSON Schema enforcement</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Infrastructure</strong></td>
+<td style="text-align: left;">In-memory Python lists or fake mocks</td>
+<td style="text-align: left;">Real PostgreSQL, Redis, and Phoenix in Docker</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Operational Metrics</strong></td>
+<td style="text-align: left;">Blind execution (<code>print</code> statements)</td>
+<td style="text-align: left;">Live millisecond latency &amp; token usage tracking</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-system-architecture">3. System Architecture</h2>
+<p>Here is the mental model for our foundation gateway:</p>
+<pre class="mermaid"><code>flowchart TD
+    AlertInput[Incident Alert Ingestion] --&gt; ConfigValidator[Environment Validator]
+    ConfigValidator --&gt; TriageEngine[Deterministic Triage Gateway]
+    subgraph Infrastructure ["Containerized Infrastructure"]
+        Postgres[(PostgreSQL 16 DB)]
+        Redis[(Redis 7 Cache)]
+    end
+    TriageEngine --&gt; Postgres
+    TriageEngine --&gt; Redis
+    TriageEngine --&gt; ModelInference{{Frontier Model API}}
+    ModelInference --&gt; SchemaValidator[Pydantic Schema Validator]
+    SchemaValidator --&gt; TelemetryRecorder[(Arize Phoenix Telemetry)]</code></pre>
+<h3 id="how-the-pieces-connect">How the Pieces Connect:</h3>
+<ol>
+<li><strong>Incident Ingestion (<code>AlertInput</code>):</strong> Raw alert traces arrive from monitoring systems (PagerDuty, Datadog, Prometheus).</li>
+<li><strong>Environment Validation (<code>ConfigValidator</code>):</strong> Before calling any external API, our system verifies that all API keys, database URLs, and port bindings are present and valid.</li>
+<li><strong>Deterministic Gateway (<code>TriageEngine</code>):</strong> The orchestrator formats the prompt, injects system operating manuals, and manages the network lifecycle.</li>
+<li><strong>Containerized Infrastructure (<code>Postgres</code> &amp; <code>Redis</code>):</strong> Real persistent stores ready to hold incident logs, runbooks, and task queues.</li>
+<li><strong>Live Frontier Inference (<code>ModelInference</code>):</strong> Direct HTTPS connection to the real language model (e.g., <code>gpt-4o-mini</code>).</li>
+<li><strong>Schema Enforcement (<code>SchemaValidator</code>):</strong> Pydantic parses the model's raw completion, guaranteeing that required fields (<code>severity</code>, <code>root_cause_hypothesis</code>, <code>recommended_action</code>) exist and have valid types.</li>
+<li><strong>Telemetry &amp; Audit (<code>TelemetryRecorder</code>):</strong> Execution duration, prompt tokens, completion tokens, and model identifiers are captured for cost and performance tracking.</li>
+</ol>
+<hr />
+<h2 id="4-engineering-deep-dive">4. Engineering Deep Dive</h2>
+<p>Let's examine the core engineering mechanics that make this architecture reliable.</p>
+<h3 id="1-blazing-fast-dependency-management-with-uv">1. Blazing-Fast Dependency Management with <code>uv</code></h3>
+<p>In modern Python, traditional tools like <code>pip</code> and <code>virtualenv</code> can be slow and inconsistent. We use <strong><code>uv</code></strong> (built in Rust by the Astral team). <code>uv</code> resolves dependencies 10x to 100x faster than <code>pip</code> and produces deterministic cross-platform lockfiles.</p>
+<p>Our root <code>pyproject.toml</code> pins dependencies strictly:
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">[project]</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"production-agentic-ai"</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"0.1.0"</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">requires-python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"&gt;=3.12"</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="s2">"pydantic&gt;=2.9.0"</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="s2">"python-dotenv&gt;=1.0.1"</span><span class="p">,</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="s2">"httpx&gt;=0.27.0"</span><span class="p">,</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="s2">"openai&gt;=1.50.0"</span><span class="p">,</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">]</span>
+</span></code></pre></div></p>
+<h3 id="2-validating-secrets-with-pydantic">2. Validating Secrets with Pydantic</h3>
+<p>Never access raw environment variables randomly across your codebase. Instead, centralize all configuration in a typed Pydantic model:</p>
+<p><div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">class</span><span class="w"> </span><span class="nc">EnvironmentConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">openai_api_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"API key for frontier model"</span><span class="p">)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">openai_model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">"gpt-4o-mini"</span><span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">postgres_port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">5432</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">65535</span><span class="p">)</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">redis_port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">6379</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">65535</span><span class="p">)</span>
+</span></code></pre></div>
+If a developer forgets to set <code>OPENAI_API_KEY</code> in their <code>.env</code>, the application fails immediately at startup with a crystal-clear error message instead of crashing in the middle of a live incident.</p>
+<h3 id="3-structured-outputs-turning-chaos-into-contracts">3. Structured Outputs: Turning Chaos Into Contracts</h3>
+<p>By default, language models output unstructured text. But autonomous agents cannot parse conversational text reliably. </p>
+<p>We solve this using <strong>Pydantic Structured Outputs</strong>:
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">TriageDecision</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">incident_id</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">severity</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"P1"</span><span class="p">,</span> <span class="s2">"P2"</span><span class="p">,</span> <span class="s2">"P3"</span><span class="p">]</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">root_cause_hypothesis</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">recommended_action</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">automated_remediation_allowed</span><span class="p">:</span> <span class="nb">bool</span>
+</span></code></pre></div>
+When we call the model via <code>client.beta.chat.completions.parse(..., response_format=TriageDecision)</code>, the OpenAI API constrains token generation at the sampler level. (Note: OpenAI places this helper in the <code>beta</code> SDK namespace, but the underlying JSON schema engine runs in full production). The response is guaranteed to conform to this exact schema.</p>
+<h3 id="4-real-time-token-latency-accounting">4. Real-Time Token &amp; Latency Accounting</h3>
+<p>Every model inference costs money and takes time. In production, you must track both continuously:
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">completion</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">latency_ms</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1000.0</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c1"># Extract exact token usage directly from the response</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">prompt_tokens</span> <span class="o">=</span> <span class="n">completion</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">prompt_tokens</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">completion_tokens</span> <span class="o">=</span> <span class="n">completion</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">completion_tokens</span>
+</span></code></pre></div>
+This telemetry enables real-time budget alerting and pinpoints sudden latency spikes before they affect users.</p>
+<blockquote>
+<p>[!NOTE]
+<strong>Why is Arize Phoenix running?</strong><br />
+We launch Phoenix in Docker Compose today so your full production infrastructure stack is active from Day 1. While Module 0 captures latency and token metrics locally, our deep-dive OpenTelemetry tracing and automated trajectory evaluations in Phoenix will take center stage in Module 6.</p>
+</blockquote>
+<hr />
+<h2 id="5-hands-on-lab-protocol">5. Hands-on Lab Protocol</h2>
+<p>Now it's time to get your hands dirty!</p>
+<h3 id="step-1-initialize-your-workspace">Step 1: Initialize Your Workspace</h3>
+<p>Ensure Python 3.12+ and <code>uv</code> are installed. Run:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Sync dependencies and install all developer tools</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>uv<span class="w"> </span>sync<span class="w"> </span>--all-extras
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Copy the environment template</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>cp<span class="w"> </span>.env.example<span class="w"> </span>.env
+</span></code></pre></div>
+Open <code>.env</code> in your editor and add your real <code>OPENAI_API_KEY</code>:
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="na">OPENAI_API_KEY</span><span class="o">=</span><span class="s">sk-proj-your-actual-key-here</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="na">OPENAI_MODEL</span><span class="o">=</span><span class="s">gpt-4o-mini</span>
+</span></code></pre></div></p>
+<h3 id="step-2-spin-up-infrastructure-containers">Step 2: Spin Up Infrastructure Containers</h3>
+<p>Start PostgreSQL, Redis, and Phoenix in the background:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+</span></code></pre></div>
+You can verify they are running with <code>docker compose ps</code>.</p>
+<h3 id="step-3-explore-the-starter-files">Step 3: Explore the Starter Files</h3>
+<p>Navigate to <code>phase-1-foundations/00-environment-and-mocks/lab/</code>:
+1. <code>environment.py</code>: Implements typed environment validation, TCP socket probing, and live API connectivity checks.
+2. <code>triage_client.py</code>: Implements the <code>TriageClient</code> gateway with structured outputs and telemetry collection.</p>
+<h3 id="step-4-complete-the-todo-blocks">Step 4: Complete the <code># TODO:</code> Blocks</h3>
+<p>Open the starter files in <code>lab/</code> and complete the marked steps:
+* In <code>environment.py</code>: Load and validate settings from <code>.env</code>, and probe the database port.
+* In <code>triage_client.py</code>: Craft the system prompt, execute structured parsing via <code>client.beta.chat.completions.parse</code>, record execution latency, and enforce the business rule that <strong>P1 critical alerts must never permit automated remediation</strong>.</p>
+<hr />
+<h2 id="6-verification-gate">6. Verification Gate</h2>
+<p>To verify that your environment and gateway are 100% production-ready, run the automated test suite from the repository root:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>phase-1-foundations/00-environment-and-mocks/tests<span class="w"> </span>-v
+</span></code></pre></div>
+<h3 id="what-this-gate-proves-7-passing-checks-across-3-files">What This Gate Proves (7 Passing Checks Across 3 Files):</h3>
+<ul>
+<li><strong><code>tests/test_environment.py</code> (Configuration Hygiene):</strong></li>
+<li><code>test_environment_config_loads_from_env</code>: Validates that <code>.env</code> is correctly read and parsed with typed defaults.</li>
+<li><code>test_check_tcp_port_invalid_host</code>: Confirms socket probes properly detect and report unreachable ports without crashing.</li>
+<li><strong><code>tests/test_infra_health.py</code> (Container Reachability):</strong></li>
+<li><code>test_postgres_port_accessibility</code>: Confirms PostgreSQL is reachable on port 5432.</li>
+<li><code>test_socket_timeout_handling</code>: Verifies timeout handling for unresponsive addresses.</li>
+<li><strong><code>tests/test_live_api.py</code> (Live Frontier Inference):</strong></li>
+<li><code>test_live_api_probe_connectivity</code>: Executes a live ping against OpenAI and verifies authentication and latency.</li>
+<li><code>test_live_api_incident_triage_p1</code>: Submits a real P1 database connection pool outage, verifies structured parsing, validates that automated remediation is blocked, and asserts token tracking is active.</li>
+<li><code>test_live_api_incident_triage_p2</code>: Submits a P2 cache latency alert and verifies that the model returns an actionable, structured diagnosis.</li>
+</ul>
+<p>When all 7 tests turn green, you have successfully built and verified your production foundation!</p>
+<hr />
+<h2 id="7-next-steps-on-to-module-1">7. Next Steps: On to Module 1!</h2>
+<p>Congratulations! You now have a verified, reproducible, enterprise-grade engineering workbench. You aren't playing with toy mocks—you are communicating directly with frontier reasoning models over secure, typed gateways.</p>
+<p>In the next chapter, we take the leap from a single prompt call to an <strong>autonomous reasoning loop</strong>:</p>
+<p>👉 <strong>Module 1: Deterministic Control Flow &amp; Core Reasoning Loops</strong><br />
+<em>You will build a pure Python ReAct (Reason + Act) loop from scratch, complete with step ceilings, self-correction repair loops, and hard token budget caps.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>
